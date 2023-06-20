@@ -1,39 +1,21 @@
 ﻿
 var boreholes = new List<Borehole>
 {
-    new Borehole
+    new Borehole(1, new Location
     {
-        Id = 1,
-        Location = new Location
-        {
-            City = "London",
-            Country = "United Kingdom"
-        },
-        Owner = "John Doe",
-        OperationalType = new Functioning(100)
-    },
-    new Borehole
+        City = "London",
+        Country = "United Kingdom"
+    }, "John Doe", new Pumping(150.00, 100)),
+    new Borehole(2, new Location
     {
-        Id = 2,
-        Location = new Location
-        {
-            City = "Paris",
-            Country = "France"
-        },
-        Owner = "Jane Doe",
-        OperationalType = new Damaged(DamageType.Major, 1000)
-    }
+        City = "Paris",
+        Country = "France"
+    }, "Jane Doe", new Damaged(DamageType.Major))
 };
 
 foreach (var borehole in boreholes)
 {
-    Console.WriteLine($"Borehole {borehole.Id} is owned by {borehole.Owner} and is located in {borehole.Location.City}, {borehole.Location.Country}.");
-    Console.WriteLine($"It is currently {borehole.OperationalType switch
-    {
-        Functioning => "functioning",
-        Damaged => "damaged",
-        _ => "unknown"
-    }}.");
+    Console.WriteLine(borehole.ToString(new OperationTypeFormatter()));
 }
 
 public class Location
@@ -43,17 +25,47 @@ public class Location
     // Additional properties like latitude, longitude, etc.
 }
 
-public record OperationalType();
-public record Functioning(decimal EstimatedDailyOperationsCost) : OperationalType;
-public record Damaged(DamageType DamageType, decimal RepairCost) : OperationalType;
+public abstract record OperationalType
+{
+    public abstract T Accept<T>(IOperationalTypeVisitor<T> visitor);
+}
+
+public record Pumping(double Volume, decimal EstimatedDailyOperationsCost) : OperationalType
+{
+    public override T Accept<T>(IOperationalTypeVisitor<T> visitor) => visitor.Visit(this);
+}
+
+public record Damaged(DamageType DamageType) : OperationalType
+{
+    public override T Accept<T>(IOperationalTypeVisitor<T> visitor) => visitor.Visit(this);
+}
+
+
+public abstract record RequireService();
+record ServiceRequired(decimal RepairCost) : RequireService;
 
 public class Borehole
 {
-    public int Id { get; set; }
-    public Location Location { get; set; }
-    public string Owner { get; set; }
+    public Borehole(int id, Location location, string owner, OperationalType operationalType)
+    {
+        Id = id;
+        Location = location;
+        Owner = owner;
+        OperationalType = operationalType;
+    }
 
-    public OperationalType OperationalType { get; set; }
+    int Id { get; init; }
+    Location Location { get; init; }
+    string Owner { get; init; }
+
+    OperationalType OperationalType { get; init; }
+
+    public string ToString(IOperationalTypeVisitor<string> formatter)
+    {
+        var line1 = $"Borehole {Id} is owned by {Owner} and is located in {Location.City}, {Location.Country}.";
+        var line2 = OperationalType.Accept(formatter);
+        return line1 + Environment.NewLine + line2;
+    }
 }
 
 public enum DamageType
@@ -61,3 +73,16 @@ public enum DamageType
     Minor,
     Major
 }
+
+public interface IOperationalTypeVisitor<out T>
+{
+    T Visit(Pumping pumping);
+    T Visit(Damaged damaged);
+}
+
+class OperationTypeFormatter : IOperationalTypeVisitor<string>
+{
+    public string Visit(Pumping pumping) => $"Pumping with volume {pumping.Volume} and estimated daily operations cost {pumping.EstimatedDailyOperationsCost}";
+    public string Visit(Damaged damaged) => $"Damaged with damage type {damaged.DamageType}";
+}
+
