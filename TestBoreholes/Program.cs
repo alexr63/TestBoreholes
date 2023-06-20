@@ -5,12 +5,26 @@ var boreholes = new List<Borehole>
     {
         City = "London",
         Country = "United Kingdom"
-    }, "John Doe", new Pumping(150.00, 100)),
+    }, "John Doe",
+        new Pumping(150.00, 100)),
     new Borehole(2, new Location
     {
         City = "Paris",
         Country = "France"
-    }, "Jane Doe", new Damaged(DamageType.Major))
+    }, "Jane Doe",
+        new Damaged(DamageType.Major, new RequiresService(1000))),
+    new Borehole(3, new Location
+    {
+        City = "Berlin",
+        Country = "Germany"
+    }, "John Doe",
+               new Damaged(DamageType.Minor, new BeingRepaired(100))),
+    new Borehole(4, new Location
+    {
+        City = "Madrid",
+        Country = "Spain"
+    }, "Jane Doe",
+                      new Damaged(DamageType.Major, new BeyondRepair(10000)))
 };
 
 foreach (var borehole in boreholes)
@@ -25,13 +39,14 @@ public class Location
     // Additional properties like latitude, longitude, etc.
 }
 
+public abstract record ServiceType();
+record RequiresService(decimal EstimatedRepairCost) : ServiceType;
+record BeingRepaired(decimal DailyRepairCost) : ServiceType;
+record BeyondRepair(decimal RepairCost) : ServiceType;
+
 public abstract record OperationalType;
 public record Pumping(double Volume, decimal EstimatedDailyOperationsCost) : OperationalType;
-public record Damaged(DamageType DamageType) : OperationalType;
-
-
-public abstract record RequireService();
-record ServiceRequired(decimal RepairCost) : RequireService;
+public record Damaged(DamageType DamageType, ServiceType ServiceType) : OperationalType;
 
 public class Borehole
 {
@@ -69,7 +84,18 @@ static class OperationTypeFormatters
     {
         Pumping pumping =>
             $"Pumping with volume {pumping.Volume} and estimated daily operations cost {pumping.EstimatedDailyOperationsCost}",
-        Damaged damaged => $"Damaged with damage type {damaged.DamageType}",
+        Damaged damaged => $"Damaged with damage type {damaged.DamageType} {damaged.ServiceType.Format()}",
+        _ => throw new NotImplementedException()
+    };
+}
+
+static class ServiceTypeFormatters
+{
+    public static string Format(this ServiceType serviceType) => serviceType switch
+    {
+        RequiresService requiresService => $"Requires service with estimated repair cost {requiresService.EstimatedRepairCost}",
+        BeingRepaired beingRepaired => $"Being repaired with daily repair cost {beingRepaired.DailyRepairCost}",
+        BeyondRepair beyondRepair => $"Beyond repair with repair cost {beyondRepair.RepairCost}",
         _ => throw new NotImplementedException()
     };
 }
