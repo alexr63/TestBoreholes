@@ -1,7 +1,7 @@
 ﻿
 var boreholes = new List<Borehole>
 {
-    new Borehole
+    new FunctioningBorehole
     {
         Id = 1,
         Location = new Location
@@ -9,7 +9,8 @@ var boreholes = new List<Borehole>
             City = "London",
             Country = "United Kingdom"
         },
-        Owner = "John Doe"
+        Owner = "John Doe",
+        EstimatedDailyOperationsCost = 100
     },
     new DamagedBorehole
     {
@@ -28,9 +29,14 @@ var boreholes = new List<Borehole>
 foreach (var borehole in boreholes)
 {
     Console.WriteLine($"Borehole {borehole.Id} is owned by {borehole.Owner} and is located in {borehole.Location.City}, {borehole.Location.Country}.");
-    if (borehole is DamagedBorehole damagedBorehole)
+    switch (borehole)
     {
-        Console.WriteLine($"It is damaged ({damagedBorehole.DamageType}) and will cost {damagedBorehole.RepairCost} to repair.");
+        case FunctioningBorehole functioningBorehole:
+            Console.WriteLine($"It is functioning and will cost {functioningBorehole.EstimatedDailyOperationsCost} per day to operate.");
+            break;
+        case DamagedBorehole damagedBorehole:
+            Console.WriteLine($"It is damaged ({damagedBorehole.DamageType}) and will cost {damagedBorehole.RepairCost} to repair.");
+            break;
     }
 }
 
@@ -46,6 +52,11 @@ public class Borehole
     public int Id { get; set; }
     public Location Location { get; set; }
     public string Owner { get; set; }
+}
+
+public class FunctioningBorehole : Borehole
+{
+    public decimal EstimatedDailyOperationsCost { get; set; }
 }
 
 public class DamagedBorehole : Borehole
