@@ -15,7 +15,7 @@ var boreholes = new List<Borehole>
 
 foreach (var borehole in boreholes)
 {
-    Console.WriteLine(borehole.ToString(new OperationTypeFormatter()));
+    Console.WriteLine(borehole);
 }
 
 public class Location
@@ -25,20 +25,9 @@ public class Location
     // Additional properties like latitude, longitude, etc.
 }
 
-public abstract record OperationalType
-{
-    public abstract T Accept<T>(IOperationalTypeVisitor<T> visitor);
-}
-
-public record Pumping(double Volume, decimal EstimatedDailyOperationsCost) : OperationalType
-{
-    public override T Accept<T>(IOperationalTypeVisitor<T> visitor) => visitor.Visit(this);
-}
-
-public record Damaged(DamageType DamageType) : OperationalType
-{
-    public override T Accept<T>(IOperationalTypeVisitor<T> visitor) => visitor.Visit(this);
-}
+public abstract record OperationalType;
+public record Pumping(double Volume, decimal EstimatedDailyOperationsCost) : OperationalType;
+public record Damaged(DamageType DamageType) : OperationalType;
 
 
 public abstract record RequireService();
@@ -60,10 +49,10 @@ public class Borehole
 
     OperationalType OperationalType { get; init; }
 
-    public string ToString(IOperationalTypeVisitor<string> formatter)
+    public override string ToString()
     {
         var line1 = $"Borehole {Id} is owned by {Owner} and is located in {Location.City}, {Location.Country}.";
-        var line2 = OperationalType.Accept(formatter);
+        var line2 = OperationalType.Format();
         return line1 + Environment.NewLine + line2;
     }
 }
@@ -74,15 +63,13 @@ public enum DamageType
     Major
 }
 
-public interface IOperationalTypeVisitor<out T>
+static class OperationTypeFormatters
 {
-    T Visit(Pumping pumping);
-    T Visit(Damaged damaged);
+    public static string Format(this OperationalType operationalType) => operationalType switch
+    {
+        Pumping pumping =>
+            $"Pumping with volume {pumping.Volume} and estimated daily operations cost {pumping.EstimatedDailyOperationsCost}",
+        Damaged damaged => $"Damaged with damage type {damaged.DamageType}",
+        _ => throw new NotImplementedException()
+    };
 }
-
-class OperationTypeFormatter : IOperationalTypeVisitor<string>
-{
-    public string Visit(Pumping pumping) => $"Pumping with volume {pumping.Volume} and estimated daily operations cost {pumping.EstimatedDailyOperationsCost}";
-    public string Visit(Damaged damaged) => $"Damaged with damage type {damaged.DamageType}";
-}
-
