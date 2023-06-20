@@ -24,7 +24,7 @@ var boreholes = new List<Borehole>
         City = "Madrid",
         Country = "Spain"
     }, "Jane Doe",
-                      new Damaged(DamageType.Major, new BeyondRepair(10000)))
+                      new Damaged(DamageType.Major, new BeyondRepair(2000)))
 };
 
 foreach (var borehole in boreholes)
@@ -39,35 +39,35 @@ public class Location
     // Additional properties like latitude, longitude, etc.
 }
 
-public abstract record ServiceType();
-record RequiresService(decimal EstimatedRepairCost) : ServiceType;
-record BeingRepaired(decimal DailyRepairCost) : ServiceType;
-record BeyondRepair(decimal RepairCost) : ServiceType;
+public abstract record Service();
+record RequiresService(decimal EstimatedRepairCost) : Service;
+record BeingRepaired(decimal DailyRepairCost) : Service;
+record BeyondRepair(decimal TotalRepairCost) : Service;
 
-public abstract record OperationalType;
-public record Pumping(double Volume, decimal EstimatedDailyOperationsCost) : OperationalType;
-public record Damaged(DamageType DamageType, ServiceType ServiceType) : OperationalType;
+public abstract record Status;
+public record Pumping(double Volume, decimal EstimatedDailyOperationsCost) : Status;
+public record Damaged(DamageType DamageType, Service Service) : Status;
 
 public class Borehole
 {
-    public Borehole(int id, Location location, string owner, OperationalType operationalType)
+    public Borehole(int id, Location location, string owner, Status status)
     {
         Id = id;
         Location = location;
         Owner = owner;
-        OperationalType = operationalType;
+        Status = status;
     }
 
     int Id { get; init; }
     Location Location { get; init; }
     string Owner { get; init; }
 
-    OperationalType OperationalType { get; init; }
+    Status Status { get; init; }
 
     public override string ToString()
     {
         var line1 = $"Borehole {Id} is owned by {Owner} and is located in {Location.City}, {Location.Country}.";
-        var line2 = OperationalType.Format();
+        var line2 = Status.Format();
         return line1 + Environment.NewLine + line2;
     }
 }
@@ -78,24 +78,24 @@ public enum DamageType
     Major
 }
 
-static class OperationTypeFormatters
+static class StatusFormatters
 {
-    public static string Format(this OperationalType operationalType) => operationalType switch
+    public static string Format(this Status status) => status switch
     {
         Pumping pumping =>
             $"Pumping with volume {pumping.Volume} and estimated daily operations cost {pumping.EstimatedDailyOperationsCost}",
-        Damaged damaged => $"Damaged with damage type {damaged.DamageType} {damaged.ServiceType.Format()}",
+        Damaged damaged => $"Damaged with damage type {damaged.DamageType} {damaged.Service.Format()}",
         _ => throw new NotImplementedException()
     };
 }
 
-static class ServiceTypeFormatters
+static class ServiceFormatters
 {
-    public static string Format(this ServiceType serviceType) => serviceType switch
+    public static string Format(this Service service) => service switch
     {
         RequiresService requiresService => $"Requires service with estimated repair cost {requiresService.EstimatedRepairCost}",
         BeingRepaired beingRepaired => $"Being repaired with daily repair cost {beingRepaired.DailyRepairCost}",
-        BeyondRepair beyondRepair => $"Beyond repair with repair cost {beyondRepair.RepairCost}",
+        BeyondRepair beyondRepair => $"Beyond repair with total repair cost {beyondRepair.TotalRepairCost}",
         _ => throw new NotImplementedException()
     };
 }
