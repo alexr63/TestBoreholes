@@ -29,6 +29,11 @@ public class Borehole : WaterSource
     {
         return Status.RequiredServices();
     }
+    
+    public List<ServiceType> PerformedServices()
+    {
+        return Status.PerformedServices();
+    }
 
     public void AddConsumption(Consumption consumption)
     {

@@ -54,7 +54,7 @@ namespace TestBoreholes.Tests
         }
 
         [Fact]
-        public void BoreholesRequiredServicesCountShouldBe6()
+        public void BoreholesRequiredServicesCountShouldBe4()
         {
             var requiredServicesCount = _locations
                 .Where(location => location.WaterSource is Borehole)
@@ -62,7 +62,19 @@ namespace TestBoreholes.Tests
                 .SelectMany(e => e.RequiredServices())
                 .Count();
 
-            requiredServicesCount.Should().Be(6);
+            requiredServicesCount.Should().Be(4);
+        }
+        
+        [Fact]
+        public void BoreholesPerformedServicesCountShouldBe2()
+        {
+            var performedServicesCount = _locations
+                .Where(location => location.WaterSource is Borehole)
+                .Select(location => (Borehole)location.WaterSource)
+                .SelectMany(e => e.PerformedServices())
+                .Count();
+
+            performedServicesCount.Should().Be(2);
         }
     }
 }
