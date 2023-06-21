@@ -8,6 +8,8 @@ var locations = new List<Location>
     new Location("Berlin", "Germany", 52.5200, 13.4050, new Borehole(3, "Jack", new Damaged(DamageType.Minor, new BeingRepaired(100)))),
     new Location("Madrid", "Spain", 40.4168, -3.7038, new Borehole(4, "Jill", new Damaged(DamageType.Major, new BeyondRepair(10000)))),
     new Location("Rome", "Italy", 41.9028, 12.4964, new Borehole(5, "Joe", new Pumping(200, 200))),
+    new Location("Vienna", "Austria", 48.2082, 16.3738, new Stream("Danube", 1000)),
+    new Location("Budapest", "Hungary", 47.4979, 19.0402, new Pond("Lake Balaton", 1000))
 };
 
 foreach (var location in locations)
@@ -164,6 +166,30 @@ public class Borehole : WaterSource
     }
 }
 
+public class Stream : WaterSource
+{
+    public Stream(string name, double flowRate)
+    {
+        Name = name;
+        FlowRate = flowRate;
+    }
+
+    public string Name { get; init; }
+    public double FlowRate { get; init; }
+}
+
+public class Pond : WaterSource
+{
+    public Pond(string name, double area)
+    {
+        Name = name;
+        Area = area;
+    }
+
+    public string Name { get; init; }
+    public double Area { get; init; }
+}
+
 public enum DamageType
 {
     Minor,
@@ -197,6 +223,8 @@ static class WaterSourceFormatters
     public static string Format(this WaterSource waterSource) => waterSource switch
     {
         Borehole borehole => $"Borehole {borehole.Id} is owned by {borehole.Owner}, current status is {borehole.Status.Format()}.",
+        Stream stream => $"Stream {stream.Name} with flow rate {stream.FlowRate}",
+        Pond pond => $"Pond {pond.Name} with area {pond.Area}",
         _ => throw new NotImplementedException()
     };
 }
