@@ -52,5 +52,17 @@ namespace TestBoreholes.Tests
 
             damagedBoreholesCount.Should().Be(2);
         }
+
+        [Fact]
+        public void BoreholesRequiredServicesCountShouldBe6()
+        {
+            var requiredServicesCount = _locations
+                .Where(location => location.WaterSource is Borehole)
+                .Select(location => (Borehole)location.WaterSource)
+                .SelectMany(e => e.RequiredServices())
+                .Count();
+
+            requiredServicesCount.Should().Be(6);
+        }
     }
 }

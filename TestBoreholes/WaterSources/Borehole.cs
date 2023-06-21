@@ -25,6 +25,11 @@ public class Borehole : WaterSource
         return $"Borehole {Id} is owned by {Owner}, current status is {Status.Format()}.";
     }
 
+    public List<ServiceType> RequiredServices()
+    {
+        return Status.RequiredServices();
+    }
+
     public void AddConsumption(Consumption consumption)
     {
         Consumptions.Add(consumption);
