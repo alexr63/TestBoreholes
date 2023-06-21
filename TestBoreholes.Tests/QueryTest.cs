@@ -1,8 +1,6 @@
 using FluentAssertions;
 using TestBoreholes.WaterSources;
 using TestBoreholes.WaterSources.Boreholes.Statuses;
-using TestBoreholes.WaterSources.Boreholes.Statuses.Services;
-
 namespace TestBoreholes.Tests
 {
     public class QueryTest
