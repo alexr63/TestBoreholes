@@ -19,20 +19,23 @@ public class Borehole : WaterSource
     [JsonProperty(TypeNameHandling = TypeNameHandling.Objects)]
     public Status Status { get; private set; }
     public List<Consumption> Consumptions { get; init; } = new();
+    public List<Service> Services { get; init; } = new();
 
     public override string ToString()
     {
         return $"Borehole {Id} is owned by {Owner}, current status is {Status.Format()}.";
     }
 
-    public List<ServiceType> RequiredServices()
+    public void RequireService(RequiredService requiredService)
     {
-        return Status.RequiredServices();
+        Services.Add(requiredService);
     }
-    
-    public List<ServiceType> PerformedServices()
+
+    public void PerformService(RequiredService requiredService, decimal cost, TimeSpan duration, DateTimeOffset endDateTimeOffset)
     {
-        return Status.PerformedServices();
+        var performedService = requiredService.Perform(cost, duration, endDateTimeOffset);
+        Services.Remove(requiredService);
+        Services.Add(performedService);
     }
 
     public void AddConsumption(Consumption consumption)
@@ -45,8 +48,19 @@ public class Borehole : WaterSource
         return Consumptions.Where(c => c.DateTimeOffset == dateTimeOffset).Sum(c => c.Value);
     }
 
-    public void SetStatus(Status status)
+    public void ChangeStatusToDamaged(DamageSeverity damageSeverity, decimal estimatedRepairCost, TimeSpan estimatedRepairTime)
     {
-        Status = status;
+        Status = new Damaged(damageSeverity, estimatedRepairCost, estimatedRepairTime);
+    }
+
+    public void ChangeStatusToPumping(double flowRate, decimal estimatedDailyOperationsCost)
+    {
+        Status = new Pumping(flowRate, estimatedDailyOperationsCost);
+    }
+
+    public void ChangeStatusToBeingRepaired(DamageSeverity damageSeverity,
+        decimal estimatedRepairCost, TimeSpan estimatedRepairTime, decimal dailyRepairCost)
+    {
+        Status = new BeingRepaired(damageSeverity, estimatedRepairCost, estimatedRepairTime, dailyRepairCost);
     }
 }

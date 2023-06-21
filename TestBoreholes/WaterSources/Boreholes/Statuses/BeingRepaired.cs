@@ -2,7 +2,7 @@
 
 public class BeingRepaired : Damaged
 {
-    public BeingRepaired(DamageType damageType, List<ServiceType> requiredServiceTypes, decimal estimatedRepairCost, TimeSpan estimatedRepairTime, decimal dailyRepairCost) : base(damageType, requiredServiceTypes, estimatedRepairCost, estimatedRepairTime)
+    public BeingRepaired(DamageSeverity damageSeverity, decimal estimatedRepairCost, TimeSpan estimatedRepairTime, decimal dailyRepairCost) : base(damageSeverity, estimatedRepairCost, estimatedRepairTime)
     {
         DailyRepairCost = dailyRepairCost;
     }

@@ -2,16 +2,14 @@
 
 public class Damaged : Status
 {
-    public Damaged(DamageType damageType, List<ServiceType> requiredServiceTypes, decimal estimatedRepairCost, TimeSpan estimatedRepairTime)
+    public Damaged(DamageSeverity damageSeverity, decimal estimatedRepairCost, TimeSpan estimatedRepairTime)
     {
-        DamageType = damageType;
-        RequiredServiceTypes = requiredServiceTypes;
+        DamageSeverity = damageSeverity;
         EstimatedRepairCost = estimatedRepairCost;
         EstimatedRepairTime = estimatedRepairTime;
     }
 
-    public DamageType DamageType { get; init; }
-    public List<ServiceType> RequiredServiceTypes { get; init; }
+    public DamageSeverity DamageSeverity { get; init; }
     public decimal EstimatedRepairCost { get; init; }
     public TimeSpan EstimatedRepairTime { get; init; }
 }
