@@ -22,21 +22,21 @@ var locations = new List<Location>
 
 var ibadan = locations[^1];
 ibadan.WaterSource = new Borehole(6, "Ibrahim", new Pumping(300, 300));
-var borehole = (Borehole)ibadan.WaterSource;
+var ibadanBorehole = (Borehole)ibadan.WaterSource;
 TimeSpan timeZoneOffset = TimeSpan.FromHours(1);
-borehole.AddConsumption(new Consumption(new DateTimeOffset(2021, 1, 1, 10, 30, 0, timeZoneOffset), 100));
-borehole.AddConsumption(new Consumption(new DateTimeOffset(2021, 1, 2, 20, 30, 0, timeZoneOffset), 200));
+ibadanBorehole.AddConsumption(new Consumption(new DateTimeOffset(2021, 1, 1, 10, 30, 0, timeZoneOffset), 100));
+ibadanBorehole.AddConsumption(new Consumption(new DateTimeOffset(2021, 1, 2, 20, 30, 0, timeZoneOffset), 200));
+Console.WriteLine(JsonConvert.SerializeObject(ibadan));
 
 const string targetTimeZoneId = "FLE Standard Time";
-foreach (var consumption in borehole.Consumptions)
+foreach (var consumption in ibadanBorehole.Consumptions)
 {
     var dateTimeOffset = consumption.DateTimeOffset;
     var dateTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(dateTimeOffset, targetTimeZoneId);
     Console.WriteLine($"{dateTimeOffset} UTC is {dateTime} in {targetTimeZoneId}");
-    Console.WriteLine($"Consumption at {dateTime} is {borehole.GetConsumption(dateTime)}");
+    Console.WriteLine($"Consumption at {dateTime} is {ibadanBorehole.GetConsumption(dateTime)}");
 }
 
-bool first = true;
 foreach (var location in locations)
 {
     Console.WriteLine(location);
@@ -47,9 +47,19 @@ foreach (var location in locations)
     };
     var obj = JsonConvert.DeserializeObject<Location>(json, settings);
     Console.WriteLine(obj);
-    if (first)
-    {
-        first = false;
-        Console.WriteLine(json);
-    }
 }
+
+// list all damaged boreholes
+var damagedBoreholes = locations
+    .Where(location => location.WaterSource is Borehole { Status: Damaged })
+    .Select(location => (Borehole)location.WaterSource)
+    .ToList();
+Console.WriteLine(JsonConvert.SerializeObject(damagedBoreholes));
+Console.WriteLine($"Total damaged boreholes: {damagedBoreholes.Count}");
+
+// list all damaged boreholes that require service
+var boreholesThatRequireService = damagedBoreholes
+    .Where(borehole => borehole.Status is Damaged { Service: RequiresService })
+    .ToList();
+Console.WriteLine(JsonConvert.SerializeObject(boreholesThatRequireService));
+Console.WriteLine($"Total damaged boreholes that require service: {boreholesThatRequireService.Count}");
