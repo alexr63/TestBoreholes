@@ -14,26 +14,26 @@ var locations = new List<Location>
     new Location("Madrid", "Spain", 40.4168, -3.7038, new Borehole(4, "Jill", new Damaged(DamageType.Major, new BeyondRepair(10000)))),
     new Location("Rome", "Italy", 41.9028, 12.4964, new Borehole(5, "Joe", new Pumping(200, 200))),
     new Location("Vienna", "Austria", 48.2082, 16.3738, new Stream("Danube", 1000)),
-    new Location("Budapest", "Hungary", 47.4979, 19.0402, new Pond("Lake Balaton", 1000))
+    new Location("Budapest", "Hungary", 47.4979, 19.0402, new Pond("Lake Balaton", 1000)),
+    new Location("Warsaw", "Poland", 52.2297, 21.0122, new Rain(1000)),
+    new Location("Kiev", "Ukraine", 50.4501, 30.5234, new Rain(2000)),
+    new Location("Ibadan", "Nigeria", 7.3117, 3.9026, new Rain(3000)),
 };
 
-var waterSource = locations[0].WaterSource;
-if (waterSource is Borehole borehole)
+var ibadan = locations[^1];
+ibadan.WaterSource = new Borehole(6, "Ibrahim", new Pumping(300, 300));
+var borehole = (Borehole)ibadan.WaterSource;
+TimeSpan timeZoneOffset = TimeSpan.FromHours(1);
+borehole.AddConsumption(new Consumption(new DateTimeOffset(2021, 1, 1, 10, 30, 0, timeZoneOffset), 100));
+borehole.AddConsumption(new Consumption(new DateTimeOffset(2021, 1, 2, 20, 30, 0, timeZoneOffset), 200));
+
+const string targetTimeZoneId = "FLE Standard Time";
+foreach (var consumption in borehole.Consumptions)
 {
-    borehole.SetStatus(new Pumping(200, 200));
-    TimeSpan timeZoneOffset = TimeSpan.FromHours(3); // Offset of UTC+3
-    borehole.AddConsumption(new Consumption(new DateTimeOffset(2021, 1, 1, 10, 30, 0, timeZoneOffset), 100));
-    borehole.AddConsumption(new Consumption(new DateTimeOffset(2021, 1, 2, 20, 30, 0, timeZoneOffset), 200));
-
-    const string targetTimeZoneId = "FLE Standard Time";
-    foreach (var consumption in borehole.Consumptions)
-    {
-        var dateTimeOffset = consumption.DateTimeOffset;
-        var dateTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(dateTimeOffset, targetTimeZoneId);
-        Console.WriteLine($"{dateTimeOffset} UTC is {dateTime} in {targetTimeZoneId}");
-        Console.WriteLine($"Consumption at {dateTime} is {borehole.GetConsumption(dateTime)}");
-    }
-
+    var dateTimeOffset = consumption.DateTimeOffset;
+    var dateTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(dateTimeOffset, targetTimeZoneId);
+    Console.WriteLine($"{dateTimeOffset} UTC is {dateTime} in {targetTimeZoneId}");
+    Console.WriteLine($"Consumption at {dateTime} is {borehole.GetConsumption(dateTime)}");
 }
 
 bool first = true;
