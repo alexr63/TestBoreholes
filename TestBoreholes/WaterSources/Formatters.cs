@@ -1,6 +1,4 @@
-﻿using TestBoreholes.WaterSources;
-using TestBoreholes.WaterSources.Boreholes.Statuses;
-using Stream = TestBoreholes.WaterSources.Stream;
+﻿using TestBoreholes.WaterSources.Boreholes.Statuses;
 
 namespace TestBoreholes.WaterSources;
 

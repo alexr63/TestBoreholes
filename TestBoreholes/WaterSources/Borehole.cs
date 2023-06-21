@@ -12,9 +12,7 @@ public class Borehole : WaterSource
         Status = status;
     }
 
-    [JsonProperty]
     public int Id { get; init; }
-    [JsonProperty]
     public string Owner { get; init; }
 
     [JsonProperty(TypeNameHandling = TypeNameHandling.Objects)]

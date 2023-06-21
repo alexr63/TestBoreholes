@@ -2,15 +2,15 @@
 
 class BeyondRepair : Service
 {
-    public BeyondRepair(decimal TotalRepairCost)
+    public BeyondRepair(decimal totalRepairCost)
     {
-        this.TotalRepairCost = TotalRepairCost;
+        TotalRepairCost = totalRepairCost;
     }
 
     public decimal TotalRepairCost { get; init; }
 
-    public void Deconstruct(out decimal TotalRepairCost)
+    public void Deconstruct(out decimal totalRepairCost)
     {
-        TotalRepairCost = this.TotalRepairCost;
+        totalRepairCost = TotalRepairCost;
     }
 }
