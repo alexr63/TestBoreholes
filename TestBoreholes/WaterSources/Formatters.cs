@@ -9,6 +9,7 @@ static class Formatters
         Borehole borehole => $"Borehole {borehole.Id} is owned by {borehole.Owner}, current boreholeStatus is {borehole.Status.Format()}.",
         Stream stream => $"Stream {stream.Name} with flow rate {stream.FlowRate}",
         Pond pond => $"Pond {pond.Name} with area {pond.Area}",
+        Rain rain => $"Rain with amount {rain.Amount}",
         _ => throw new NotImplementedException()
     };
 }
