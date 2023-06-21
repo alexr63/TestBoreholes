@@ -3,11 +3,11 @@ using Newtonsoft.Json;
 
 var locations = new List<Location>
 {
-    new Location("London", "United Kingdom", new Borehole(1, "John", new Pumping(100, 100))),
-    new Location("Paris", "France", new Borehole(2, "Jane", new Damaged(DamageType.Major, new RequiresService(1000)))),
-    new Location("Berlin", "Germany", new Borehole(3, "Jack", new Damaged(DamageType.Minor, new BeingRepaired(100)))),
-    new Location("Madrid", "Spain", new Borehole(4, "Jill", new Damaged(DamageType.Major, new BeyondRepair(10000)))),
-    new Location("Rome", "Italy", new Borehole(5, "Joe", new Pumping(200, 200))),
+    new Location("London", "United Kingdom", 51.5074, -0.1278, new Borehole(1, "John", new Pumping(100, 100))),
+    new Location("Paris", "France", 48.8566, 2.3522, new Borehole(2, "Jane", new Damaged(DamageType.Major, new RequiresService(1000)))),
+    new Location("Berlin", "Germany", 52.5200, 13.4050, new Borehole(3, "Jack", new Damaged(DamageType.Minor, new BeingRepaired(100)))),
+    new Location("Madrid", "Spain", 40.4168, -3.7038, new Borehole(4, "Jill", new Damaged(DamageType.Major, new BeyondRepair(10000)))),
+    new Location("Rome", "Italy", 41.9028, 12.4964, new Borehole(5, "Joe", new Pumping(200, 200))),
 };
 
 foreach (var location in locations)
@@ -24,23 +24,26 @@ foreach (var location in locations)
 
 public class Location
 {
-    public Location(string city, string country, WaterSource waterSource)
+    public Location(string city, string country, double latitude, double longitude, WaterSource waterSource)
     {
         City = city;
         Country = country;
+        Latitude = latitude;
+        Longitude = longitude;
         WaterSource = waterSource;
     }
 
     public string City { get; set; }
     public string Country { get; set; }
-    // Additional properties like latitude, longitude, etc.
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
 
     [JsonProperty(TypeNameHandling = TypeNameHandling.Objects)]
     public WaterSource WaterSource { get; set; }
 
     public override string ToString()
     {
-        return $"Location: {City}, {Country}, {WaterSource.Format()}";
+        return $"Location: {City}, {Country}, {Latitude}, {Longitude} {WaterSource.Format()}";
     }
 }
 
