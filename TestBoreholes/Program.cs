@@ -1,63 +1,51 @@
 ﻿
 using Newtonsoft.Json;
 
-var boreholes = new List<Borehole>
+var locations = new List<Location>
 {
-    new Borehole(1, new Location
-    {
-        City = "London",
-        Country = "United Kingdom"
-    }, "John Doe",
-        new Pumping(150.0, 100.00m)),
-    new Borehole(2, new Location
-    {
-        City = "Paris",
-        Country = "France"
-    }, "Jane Doe",
-        new Damaged(DamageType.Major, new RequiresService(1000.00m))),
-    new Borehole(3, new Location
-    {
-        City = "Berlin",
-        Country = "Germany"
-    }, "John Doe",
-               new Damaged(DamageType.Minor, new BeingRepaired(100.00m))),
-    new Borehole(4, new Location
-    {
-        City = "Madrid",
-        Country = "Spain"
-    }, "Jane Doe",
-                      new Damaged(DamageType.Major, new BeyondRepair(2000.00m)))
+    new Location("London", "United Kingdom", new Borehole(1, "John", new Pumping(100, 100))),
+    new Location("Paris", "France", new Borehole(2, "Jane", new Damaged(DamageType.Major, new RequiresService(1000)))),
+    new Location("Berlin", "Germany", new Borehole(3, "Jack", new Damaged(DamageType.Minor, new BeingRepaired(100)))),
+    new Location("Madrid", "Spain", new Borehole(4, "Jill", new Damaged(DamageType.Major, new BeyondRepair(10000)))),
+    new Location("Rome", "Italy", new Borehole(5, "Joe", new Pumping(200, 200))),
 };
 
-foreach (var borehole in boreholes)
+foreach (var location in locations)
 {
-    
-}
-
-foreach (var borehole in boreholes)
-{
-    Console.WriteLine(borehole);
-    string json = JsonConvert.SerializeObject(borehole);
+    Console.WriteLine(location);
+    string json = JsonConvert.SerializeObject(location);
     var settings = new JsonSerializerSettings
     {
         TypeNameHandling = TypeNameHandling.Auto
     };
-    var obj = JsonConvert.DeserializeObject<Borehole>(json, settings);
+    var obj = JsonConvert.DeserializeObject<Location>(json, settings);
     Console.WriteLine(obj);
 }
 
 public class Location
 {
+    public Location(string city, string country, WaterSource waterSource)
+    {
+        City = city;
+        Country = country;
+        WaterSource = waterSource;
+    }
+
     public string City { get; set; }
     public string Country { get; set; }
     // Additional properties like latitude, longitude, etc.
+
+    [JsonProperty(TypeNameHandling = TypeNameHandling.Objects)]
+    public WaterSource WaterSource { get; set; }
+
+    public override string ToString()
+    {
+        return $"Location: {City}, {Country}, {WaterSource.Format()}";
+    }
 }
 
 public abstract class Service
 {
-    protected Service()
-    {
-    }
 }
 
 class RequiresService : Service
@@ -146,31 +134,30 @@ public class Damaged : Status
     }
 }
 
-public class Borehole
+public abstract class WaterSource
 {
-    public Borehole(int id, Location location, string owner, Status status)
+}
+
+public class Borehole : WaterSource
+{
+    public Borehole(int id, string owner, Status status)
     {
         Id = id;
-        Location = location;
         Owner = owner;
         Status = status;
     }
 
     [JsonProperty]
-    int Id { get; init; }
+    public int Id { get; init; }
     [JsonProperty]
-    Location Location { get; init; }
-    [JsonProperty]
-    string Owner { get; init; }
+    public string Owner { get; init; }
 
     [JsonProperty(TypeNameHandling = TypeNameHandling.Objects)]
-    Status Status { get; init; }
+    public Status Status { get; init; }
 
     public override string ToString()
     {
-        var line1 = $"Borehole {Id} is owned by {Owner} and is located in {Location.City}, {Location.Country}.";
-        var line2 = Status.Format();
-        return String.Join(" ", line1, line2);
+        return $"Borehole {Id} is owned by {Owner}, current status is {Status.Format()}.";
     }
 }
 
@@ -198,6 +185,15 @@ static class ServiceFormatters
         RequiresService requiresService => $"Requires service with estimated repair cost {requiresService.EstimatedRepairCost}",
         BeingRepaired beingRepaired => $"Being repaired with daily repair cost {beingRepaired.DailyRepairCost}",
         BeyondRepair beyondRepair => $"Beyond repair with total repair cost {beyondRepair.TotalRepairCost}",
+        _ => throw new NotImplementedException()
+    };
+}
+
+static class WaterSourceFormatters
+{
+    public static string Format(this WaterSource waterSource) => waterSource switch
+    {
+        Borehole borehole => $"Borehole {borehole.Id} is owned by {borehole.Owner}, current status is {borehole.Status.Format()}.",
         _ => throw new NotImplementedException()
     };
 }
