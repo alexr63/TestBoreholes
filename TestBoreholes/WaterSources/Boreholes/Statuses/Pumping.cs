@@ -2,18 +2,18 @@
 
 public class Pumping : Status
 {
-    public Pumping(double volume, decimal estimatedDailyOperationsCost)
+    public Pumping(double flowRate, decimal estimatedDailyOperationsCost)
     {
-        Volume = volume;
+        FlowRate = flowRate;
         EstimatedDailyOperationsCost = estimatedDailyOperationsCost;
     }
 
-    public double Volume { get; init; }
+    public double FlowRate { get; init; }
     public decimal EstimatedDailyOperationsCost { get; init; }
 
-    public void Deconstruct(out double volume, out decimal estimatedDailyOperationsCost)
+    public void Deconstruct(out double flowRate, out decimal estimatedDailyOperationsCost)
     {
-        volume = Volume;
+        flowRate = FlowRate;
         estimatedDailyOperationsCost = EstimatedDailyOperationsCost;
     }
 }
