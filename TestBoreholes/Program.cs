@@ -40,12 +40,5 @@ foreach (var consumption in ibadanBorehole.Consumptions)
 foreach (var location in locations)
 {
     Console.WriteLine(location);
-    string json = JsonConvert.SerializeObject(location);
-    var settings = new JsonSerializerSettings
-    {
-        TypeNameHandling = TypeNameHandling.Auto
-    };
-    var obj = JsonConvert.DeserializeObject<Location>(json, settings);
-    Console.WriteLine(obj);
 }
 
