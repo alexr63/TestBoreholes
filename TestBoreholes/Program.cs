@@ -2,8 +2,8 @@
 using TestBoreholes;
 using TestBoreholes.WaterSources;
 using TestBoreholes.WaterSources.Boreholes;
-using TestBoreholes.WaterSources.Boreholes.BoreholeServices;
-using TestBoreholes.WaterSources.Boreholes.BoreholeStatuses;
+using TestBoreholes.WaterSources.Boreholes.Statuses;
+using TestBoreholes.WaterSources.Boreholes.Statuses.Services;
 using Stream = TestBoreholes.WaterSources.Stream;
 
 var locations = new List<Location>
@@ -17,6 +17,7 @@ var locations = new List<Location>
     new Location("Budapest", "Hungary", 47.4979, 19.0402, new Pond("Lake Balaton", 1000))
 };
 
+bool first = true;
 foreach (var location in locations)
 {
     Console.WriteLine(location);
@@ -27,4 +28,9 @@ foreach (var location in locations)
     };
     var obj = JsonConvert.DeserializeObject<Location>(json, settings);
     Console.WriteLine(obj);
+    if (first)
+    {
+        first = false;
+        Console.WriteLine(json);
+    }
 }

@@ -1,6 +1,6 @@
-﻿namespace TestBoreholes.WaterSources.Boreholes.BoreholeServices;
+﻿namespace TestBoreholes.WaterSources.Boreholes.Statuses.Services;
 
-class RequiresService : BoreholeService
+class RequiresService : Service
 {
     public RequiresService(decimal estimatedRepairCost)
     {

@@ -1,10 +1,10 @@
-﻿using TestBoreholes.WaterSources.Boreholes.BoreholeStatuses;
+﻿using TestBoreholes.WaterSources.Boreholes.Statuses.Services;
 
-namespace TestBoreholes.Formatters;
+namespace TestBoreholes.WaterSources.Boreholes.Statuses;
 
-static class BoreholeStatusFormatters
+static class Formatters
 {
-    public static string Format(this BoreholeStatus boreholeStatus) => boreholeStatus switch
+    public static string Format(this Status boreholeStatus) => boreholeStatus switch
     {
         Pumping pumping =>
             $"Pumping with volume {pumping.Volume} and estimated daily operations cost {pumping.EstimatedDailyOperationsCost}",

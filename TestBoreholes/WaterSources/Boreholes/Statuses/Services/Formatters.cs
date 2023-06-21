@@ -1,10 +1,8 @@
-﻿using TestBoreholes.WaterSources.Boreholes.BoreholeServices;
+﻿namespace TestBoreholes.WaterSources.Boreholes.Statuses.Services;
 
-namespace TestBoreholes.Formatters;
-
-static class BoreholeServiceFormatters
+static class Formatters
 {
-    public static string Format(this BoreholeService service) => service switch
+    public static string Format(this Service service) => service switch
     {
         RequiresService requiresService => $"Requires service with estimated repair cost {requiresService.EstimatedRepairCost}",
         BeingRepaired beingRepaired => $"Being repaired with daily repair cost {beingRepaired.DailyRepairCost}",

@@ -1,6 +1,6 @@
-﻿namespace TestBoreholes.WaterSources.Boreholes.BoreholeStatuses;
+﻿namespace TestBoreholes.WaterSources.Boreholes.Statuses;
 
-public class Pumping : BoreholeStatus
+public class Pumping : Status
 {
     public Pumping(double volume, decimal estimatedDailyOperationsCost)
     {
