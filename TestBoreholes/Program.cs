@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using TestBoreholes;
 using TestBoreholes.WaterSources;
+using TestBoreholes.WaterSources.Boreholes;
 using TestBoreholes.WaterSources.Boreholes.Statuses;
 using TestBoreholes.WaterSources.Boreholes.Statuses.Services;
 using Stream = TestBoreholes.WaterSources.Stream;
@@ -15,6 +16,14 @@ var locations = new List<Location>
     new Location("Vienna", "Austria", 48.2082, 16.3738, new Stream("Danube", 1000)),
     new Location("Budapest", "Hungary", 47.4979, 19.0402, new Pond("Lake Balaton", 1000))
 };
+
+var waterSource = locations[0].WaterSource;
+if (waterSource is Borehole borehole)
+{
+    borehole.SetStatus(new Pumping(200, 200));
+    borehole.AddConsumption(new Consumption(new DateTime(2021, 1, 1), 100));
+    borehole.AddConsumption(new Consumption(new DateTime(2021, 1, 2), 200));
+}
 
 bool first = true;
 foreach (var location in locations)
