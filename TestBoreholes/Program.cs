@@ -21,8 +21,19 @@ var waterSource = locations[0].WaterSource;
 if (waterSource is Borehole borehole)
 {
     borehole.SetStatus(new Pumping(200, 200));
-    borehole.AddConsumption(new Consumption(new DateTime(2021, 1, 1), 100));
-    borehole.AddConsumption(new Consumption(new DateTime(2021, 1, 2), 200));
+    TimeSpan timeZoneOffset = TimeSpan.FromHours(3); // Offset of UTC+3
+    borehole.AddConsumption(new Consumption(new DateTimeOffset(2021, 1, 1, 10, 30, 0, timeZoneOffset), 100));
+    borehole.AddConsumption(new Consumption(new DateTimeOffset(2021, 1, 2, 20, 30, 0, timeZoneOffset), 200));
+
+    const string targetTimeZoneId = "FLE Standard Time";
+    foreach (var consumption in borehole.Consumptions)
+    {
+        var dateTimeOffset = consumption.DateTimeOffset;
+        var dateTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(dateTimeOffset, targetTimeZoneId);
+        Console.WriteLine($"{dateTimeOffset} UTC is {dateTime} in {targetTimeZoneId}");
+        Console.WriteLine($"Consumption at {dateTime} is {borehole.GetConsumption(dateTime)}");
+    }
+
 }
 
 bool first = true;

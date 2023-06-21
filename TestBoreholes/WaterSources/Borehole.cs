@@ -30,9 +30,9 @@ public class Borehole : WaterSource
         Consumptions.Add(consumption);
     }
 
-    public double GetConsumption(DateTime dateTime)
+    public double GetConsumption(DateTimeOffset dateTimeOffset)
     {
-        return Consumptions.Where(c => c.DateTime == dateTime).Sum(c => c.Value);
+        return Consumptions.Where(c => c.DateTimeOffset == dateTimeOffset).Sum(c => c.Value);
     }
 
     public void SetStatus(Status status)

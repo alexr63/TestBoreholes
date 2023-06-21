@@ -2,12 +2,12 @@
 
 public class Consumption
 {
-    public Consumption(DateTime dateTime, double value)
+    public Consumption(DateTimeOffset dateTimeOffset, double value)
     {
-        DateTime = dateTime;
+        DateTimeOffset = dateTimeOffset;
         Value = value;
     }
 
-    public DateTime DateTime { get; init; }
+    public DateTimeOffset DateTimeOffset { get; init; }
     public double Value { get; init; }
 }
