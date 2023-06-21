@@ -49,25 +49,3 @@ foreach (var location in locations)
     Console.WriteLine(obj);
 }
 
-// list all functioning boreholes
-var functioningBoreholes = locations
-    .Where(location => location.WaterSource is Borehole { Status: Pumping })
-    .Select(location => (Borehole)location.WaterSource)
-    .ToList();
-Console.WriteLine(JsonConvert.SerializeObject(functioningBoreholes));
-Console.WriteLine($"Total functioning boreholes: {functioningBoreholes.Count}");
-
-// list all damaged boreholes
-var damagedBoreholes = locations
-    .Where(location => location.WaterSource is Borehole { Status: Damaged })
-    .Select(location => (Borehole)location.WaterSource)
-    .ToList();
-Console.WriteLine(JsonConvert.SerializeObject(damagedBoreholes));
-Console.WriteLine($"Total damaged boreholes: {damagedBoreholes.Count}");
-
-// list all damaged boreholes that require service
-var boreholesThatRequireService = damagedBoreholes
-    .Where(borehole => borehole.Status is Damaged { Service: RequiresService })
-    .ToList();
-Console.WriteLine(JsonConvert.SerializeObject(boreholesThatRequireService));
-Console.WriteLine($"Total damaged boreholes that require service: {boreholesThatRequireService.Count}");

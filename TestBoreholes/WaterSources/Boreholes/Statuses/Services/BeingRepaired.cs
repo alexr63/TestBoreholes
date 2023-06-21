@@ -1,6 +1,6 @@
 ﻿namespace TestBoreholes.WaterSources.Boreholes.Statuses.Services;
 
-class BeingRepaired : Service
+public class BeingRepaired : Service
 {
     public BeingRepaired(decimal dailyRepairCost)
     {
