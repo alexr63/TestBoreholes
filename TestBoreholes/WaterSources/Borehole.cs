@@ -1,19 +1,20 @@
 ﻿using Newtonsoft.Json;
 using TestBoreholes.WaterSources.Boreholes;
+using TestBoreholes.WaterSources.Boreholes.Services;
 using TestBoreholes.WaterSources.Boreholes.Statuses;
 
 namespace TestBoreholes.WaterSources;
 
 public class Borehole : WaterSource
 {
-    public Borehole(int id, string owner, Status status)
+    public Borehole(string id, string owner, Status status)
     {
         Id = id;
         Owner = owner;
         Status = status;
     }
 
-    public int Id { get; init; }
+    public string Id { get; init; }
     public string Owner { get; init; }
 
     [JsonProperty(TypeNameHandling = TypeNameHandling.Objects)]

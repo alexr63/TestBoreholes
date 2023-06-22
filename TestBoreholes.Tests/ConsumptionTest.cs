@@ -18,7 +18,7 @@ namespace TestBoreholes.Tests
         public void ConsumptionTimeZoneShouldBeInTargetFormat()
         {
             // change the water source to a borehole
-            _ibadan.WaterSource = new Borehole(1, "John", new Pumping(100, 100));
+            _ibadan.WaterSource = new Borehole("NG-OY-1353", "FairAction Nigeria", new Pumping(100, 100));
             var ibadanBorehole = (Borehole)_ibadan.WaterSource;
             var timeZoneInfo = _ibadan.GetTimeZoneInfo();
 

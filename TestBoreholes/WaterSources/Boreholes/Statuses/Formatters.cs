@@ -2,7 +2,7 @@
 
 static class Formatters
 {
-    public static string Format(this Status boreholeStatus) => boreholeStatus switch
+    public static string Format(this Status status) => status switch
     {
         Pumping pumping =>
             $"Pumping with flow rate {pumping.FlowRate} and estimated daily operations cost {pumping.EstimatedDailyOperationsCost}",
