@@ -1,5 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using GeoTimeZone;
+using Newtonsoft.Json;
 using TestBoreholes.WaterSources;
+using TimeZoneConverter;
 
 namespace TestBoreholes;
 
@@ -25,5 +27,13 @@ public class Location
     public override string ToString()
     {
         return $"Location: {City}, {Country}, {Latitude}, {Longitude} {WaterSource.Format()}";
+    }
+
+    public TimeZoneInfo GetTimeZoneInfo()
+    {
+        string timeZoneId = TimeZoneLookup.GetTimeZone(Latitude, Longitude).Result;
+        TimeZoneInfo timeZoneInfo = TZConvert.GetTimeZoneInfo(timeZoneId);
+
+        return timeZoneInfo;
     }
 }
