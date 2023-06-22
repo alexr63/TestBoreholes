@@ -1,8 +1,10 @@
-﻿namespace TestBoreholes.WaterSources.Boreholes.Statuses;
+﻿using NodaMoney;
+
+namespace TestBoreholes.WaterSources.Boreholes.Statuses;
 
 public class Damaged : Status
 {
-    public Damaged(DamageSeverity damageSeverity, decimal estimatedRepairCost, TimeSpan estimatedRepairTime)
+    public Damaged(DamageSeverity damageSeverity, Money estimatedRepairCost, TimeSpan estimatedRepairTime)
     {
         DamageSeverity = damageSeverity;
         EstimatedRepairCost = estimatedRepairCost;
@@ -10,6 +12,6 @@ public class Damaged : Status
     }
 
     public DamageSeverity DamageSeverity { get; init; }
-    public decimal EstimatedRepairCost { get; init; }
+    public Money EstimatedRepairCost { get; init; }
     public TimeSpan EstimatedRepairTime { get; init; }
 }
