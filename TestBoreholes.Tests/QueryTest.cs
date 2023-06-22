@@ -21,7 +21,7 @@ namespace TestBoreholes.Tests
                 new Location("Berlin", "Germany", 52.5200, 13.4050, new Borehole("B1", "Jack",
                     new Damaged(DamageSeverity.Medium, Money.Euro(1500.0m), TimeSpan.FromDays(3)))),
                 new Location("Madrid", "Spain", 40.4168, -3.7038, new Borehole("M1", "Jill",
-                    new BeingRepaired(DamageSeverity.High, Money.Euro(1000.0m), TimeSpan.FromDays(5), Money.Euro(200.0m)))),
+                    new BeingRepaired(Money.Euro(200.0m)))),
                 new Location("Rome", "Italy", 41.9028, 12.4964, new Borehole("R1", "Joe", new Pumping(200, Money.Euro(200.0m)))),
                 new Location("Vienna", "Austria", 48.2082, 16.3738, new Stream("Danube", 1000)),
                 new Location("Budapest", "Hungary", 47.4979, 19.0402, new Pond("Lake Balaton", 1000)),

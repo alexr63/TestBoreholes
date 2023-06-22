@@ -55,9 +55,8 @@ public class Borehole : WaterSource
         Status = new Pumping(flowRate, estimatedDailyOperationsCost);
     }
 
-    public void ChangeStatusToBeingRepaired(DamageSeverity damageSeverity,
-        Money estimatedRepairCost, TimeSpan estimatedRepairTime, Money dailyRepairCost)
+    public void ChangeStatusToBeingRepaired(Money dailyRepairCost)
     {
-        Status = new BeingRepaired(damageSeverity, estimatedRepairCost, estimatedRepairTime, dailyRepairCost);
+        Status = new BeingRepaired(dailyRepairCost);
     }
 }
