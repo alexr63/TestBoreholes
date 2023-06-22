@@ -1,14 +1,14 @@
-﻿using TestBoreholes.WaterSources.Boreholes.Statuses.Services;
-
-namespace TestBoreholes.WaterSources.Boreholes.Statuses;
+﻿namespace TestBoreholes.WaterSources.Boreholes.Statuses;
 
 static class Formatters
 {
-    public static string Format(this Status boreholeStatus) => boreholeStatus switch
+    public static string Format(this Status status) => status switch
     {
         Pumping pumping =>
             $"Pumping with flow rate {pumping.FlowRate} and estimated daily operations cost {pumping.EstimatedDailyOperationsCost}",
-        Damaged damaged => $"Damaged with damage type {damaged.DamageType} {damaged.Service.Format()}",
+        BeingRepaired beingRepaired =>
+            $"Being repaired with damage type {beingRepaired.DamageSeverity} and daily repair cost {beingRepaired.DailyRepairCost}",
+        Damaged damaged => $"Damaged with damage type {damaged.DamageSeverity}",
         _ => throw new NotImplementedException()
     };
 }

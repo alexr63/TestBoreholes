@@ -10,10 +10,4 @@ public class Pumping : Status
 
     public double FlowRate { get; init; }
     public decimal EstimatedDailyOperationsCost { get; init; }
-
-    public void Deconstruct(out double flowRate, out decimal estimatedDailyOperationsCost)
-    {
-        flowRate = FlowRate;
-        estimatedDailyOperationsCost = EstimatedDailyOperationsCost;
-    }
 }

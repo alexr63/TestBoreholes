@@ -1,23 +1,15 @@
-﻿using Newtonsoft.Json;
-using TestBoreholes.WaterSources.Boreholes.Statuses.Services;
-
-namespace TestBoreholes.WaterSources.Boreholes.Statuses;
+﻿namespace TestBoreholes.WaterSources.Boreholes.Statuses;
 
 public class Damaged : Status
 {
-    public Damaged(DamageType damageType, Service service)
+    public Damaged(DamageSeverity damageSeverity, decimal estimatedRepairCost, TimeSpan estimatedRepairTime)
     {
-        DamageType = damageType;
-        Service = service;
+        DamageSeverity = damageSeverity;
+        EstimatedRepairCost = estimatedRepairCost;
+        EstimatedRepairTime = estimatedRepairTime;
     }
 
-    public DamageType DamageType { get; init; }
-    [JsonProperty(TypeNameHandling = TypeNameHandling.Objects)]
-    public Service Service { get; init; }
-
-    public void Deconstruct(out DamageType damageType, out Service service)
-    {
-        damageType = DamageType;
-        service = Service;
-    }
+    public DamageSeverity DamageSeverity { get; init; }
+    public decimal EstimatedRepairCost { get; init; }
+    public TimeSpan EstimatedRepairTime { get; init; }
 }

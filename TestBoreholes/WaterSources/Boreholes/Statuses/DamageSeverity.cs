@@ -1,7 +1,8 @@
 ﻿namespace TestBoreholes.WaterSources.Boreholes.Statuses;
 
-public enum DamageType
+public enum DamageSeverity
 {
-    Minor,
-    Major
+    Low,
+    Medium,
+    High
 }
