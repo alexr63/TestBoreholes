@@ -17,13 +17,13 @@ namespace TestBoreholes.Tests
         public void SerializeLocation()
         {
             var json = JsonConvert.SerializeObject(_ibadan);
-            json.Should().Be("{\"City\":\"Ibadan\",\"Country\":\"Nigeria\",\"Latitude\":7.3117,\"Longitude\":3.9026,\"WaterSource\":{\"$type\":\"TestBoreholes.WaterSources.Rain, TestBoreholes\",\"Amount\":3000.0}}");
+            json.Should().Be("{\"City\":\"Ibadan\",\"Country\":\"Nigeria\",\"Latitude\":7.3117,\"Longitude\":3.9026,\"WaterSource\":{\"$type\":\"TestBoreholes.WaterSources.Rain, TestBoreholes\",\"Rate\":3000.0}}");
         }
 
         [Fact]
         public void DeserializeLocation()
         {
-            var json = "{\"City\":\"Ibadan\",\"Country\":\"Nigeria\",\"Latitude\":7.3117,\"Longitude\":3.9026,\"WaterSource\":{\"$type\":\"TestBoreholes.WaterSources.Rain, TestBoreholes\",\"Amount\":3000.0}}";
+            var json = "{\"City\":\"Ibadan\",\"Country\":\"Nigeria\",\"Latitude\":7.3117,\"Longitude\":3.9026,\"WaterSource\":{\"$type\":\"TestBoreholes.WaterSources.Rain, TestBoreholes\",\"Rate\":3000.0}}";
             var location = JsonConvert.DeserializeObject<Location>(json);
             location.Should().BeEquivalentTo(_ibadan);
         }
