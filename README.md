@@ -1,12 +1,16 @@
 # TestBoreholes data model (draft)
 
-The data model contains locations of water sources and their properties.
+## The data model represents a location entity.
 
-A location is defined by a latitude, and a longitude. The latitude and longitude are given in degrees. The latitude is positive for the northern hemisphere and negative for the southern hemisphere. The longitude is positive for the eastern hemisphere and negative for the western hemisphere.
+A location has a latitude, and a longitude. The latitude and longitude are given in degrees. The latitude is positive for the northern hemisphere and negative for the southern hemisphere. The longitude is positive for the eastern hemisphere and negative for the western hemisphere.
 
-A location has a city name, and a country name.
+At a location people can use a water source. The water source is one of the following: river, lake, spring, well, rain, pond, stream or borehole.
 
-A location has a water source. The water source is one of the following: river, lake, spring, well, rain, pond, stream or borehole.
+A location is labeled with a city name, and a country name.
+
+
+
+## The data model represents a borehole entity.
 
 A borehole has a depth. The depth is given in meters.
 
