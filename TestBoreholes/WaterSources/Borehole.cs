@@ -18,7 +18,7 @@ public class Borehole : WaterSource
 
     [JsonProperty(TypeNameHandling = TypeNameHandling.Objects)]
     public Status Status { get; private set; }
-    public List<Consumption> Consumptions { get; init; } = new();
+    public SortedDictionary<DateTimeOffset, double> Consumptions { get; init; } = new();
     public List<Service> Services { get; init; } = new();
 
     public override string ToString()
@@ -40,12 +40,7 @@ public class Borehole : WaterSource
 
     public void AddConsumption(Consumption consumption)
     {
-        Consumptions.Add(consumption);
-    }
-
-    public double GetConsumption(DateTimeOffset dateTimeOffset)
-    {
-        return Consumptions.Where(c => c.DateTimeOffset == dateTimeOffset).Sum(c => c.Value);
+        Consumptions[consumption.DateTimeOffset] = consumption.Value;
     }
 
     public void ChangeStatusToDamaged(DamageSeverity damageSeverity, decimal estimatedRepairCost, TimeSpan estimatedRepairTime)

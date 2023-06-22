@@ -37,8 +37,8 @@ namespace TestBoreholes.Tests
             var targetTimeZoneOffset = targetTimeZoneInfo.GetUtcOffset(DateTime.UtcNow);
 
             // display the consumption
-            var consumption = ibadanBorehole.Consumptions[0];
-            var dateTimeOffset = consumption.DateTimeOffset;
+            var consumption = ibadanBorehole.Consumptions.First();
+            var dateTimeOffset = consumption.Key;
             var dateTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(dateTimeOffset, targetTimeZoneId);
 
             dateTime.Should().Be(new DateTimeOffset(2021, 1, 1, 12, 30, 0, targetTimeZoneOffset));
