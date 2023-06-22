@@ -20,7 +20,8 @@ var locations = new List<Location>
     new Location("Budapest", "Hungary", 47.4979, 19.0402, new Pond("Lake Balaton", 1000)),
     new Location("Warsaw", "Poland", 52.2297, 21.0122, new Rain(1000)),
     new Location("Kiev", "Ukraine", 50.4501, 30.5234, new Rain(2000)),
-    new Location("Ibadan", "Nigeria", 7.3117, 3.9026, new Rain(3000)),
+    new Location("Ibadan", "Nigeria", 7.3117, 3.9026, new Borehole("NG-OY-1353", "FairAction Nigeria",
+        new Pumping(300, new Money(76.54m, "NGN")))),
 };
 
 if (locations[1].WaterSource is Borehole borehole1)
