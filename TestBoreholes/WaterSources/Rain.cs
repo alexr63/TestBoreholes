@@ -2,10 +2,10 @@
 
 public class Rain : WaterSource
 {
-    public Rain(double amount)
+    public Rain(double rate)
     {
-        Amount = amount;
+        Rate = rate;
     }
 
-    public double Amount { get; init; }
+    public double Rate { get; init; }
 }

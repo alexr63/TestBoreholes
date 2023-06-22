@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using NodaMoney;
 using TestBoreholes.WaterSources.Boreholes;
 using TestBoreholes.WaterSources.Boreholes.Services;
 using TestBoreholes.WaterSources.Boreholes.Statuses;
@@ -32,7 +33,7 @@ public class Borehole : WaterSource
         Services.Add(requiredService);
     }
 
-    public void PerformService(RequiredService requiredService, decimal cost, TimeSpan duration, DateTimeOffset endDateTimeOffset)
+    public void PerformService(RequiredService requiredService, Money cost, TimeSpan duration, DateTimeOffset endDateTimeOffset)
     {
         var performedService = requiredService.Perform(cost, duration, endDateTimeOffset);
         Services.Remove(requiredService);
@@ -44,18 +45,18 @@ public class Borehole : WaterSource
         Consumptions[consumption.DateTimeOffset] = consumption.Value;
     }
 
-    public void ChangeStatusToDamaged(DamageSeverity damageSeverity, decimal estimatedRepairCost, TimeSpan estimatedRepairTime)
+    public void ChangeStatusToDamaged(DamageSeverity damageSeverity, Money estimatedRepairCost, TimeSpan estimatedRepairTime)
     {
         Status = new Damaged(damageSeverity, estimatedRepairCost, estimatedRepairTime);
     }
 
-    public void ChangeStatusToPumping(double flowRate, decimal estimatedDailyOperationsCost)
+    public void ChangeStatusToPumping(double flowRate, Money estimatedDailyOperationsCost)
     {
         Status = new Pumping(flowRate, estimatedDailyOperationsCost);
     }
 
     public void ChangeStatusToBeingRepaired(DamageSeverity damageSeverity,
-        decimal estimatedRepairCost, TimeSpan estimatedRepairTime, decimal dailyRepairCost)
+        Money estimatedRepairCost, TimeSpan estimatedRepairTime, Money dailyRepairCost)
     {
         Status = new BeingRepaired(damageSeverity, estimatedRepairCost, estimatedRepairTime, dailyRepairCost);
     }
