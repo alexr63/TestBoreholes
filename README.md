@@ -58,7 +58,9 @@ A borehole has an owner. The owner is given as a string value.
 
 A borehole has a status. The status is one of the following: pumping, damaged, or being repaired.
 
-A borehole contains a list of services. The service is one of the following types: required, and performed.
+A borehole contains a list of required services.
+
+A borehole contains a list of performed services.
 
 ### The data model represents a pumping borehole entity.
 
@@ -78,17 +80,19 @@ A damaged borehole has an estimated repair time. The estimated repair time is gi
 
 A borehole being repaired has a daily repair cost. The daily repair cost is given in moneys.
 
-## The data model represents a service entity.
-
-A service has a type. The type is one of the following: concrete, construction, electrical, mechanical, plumbing, pump, steel, other.
-
 ### The data model represents required service entity.
+
+A required service has a type. The type is one of the following: concrete, construction, electrical, mechanical, plumbing, pump, steel, other.
 
 A required service has an estimated cost. The estimated cost is given in moneys.
 
-A required service has an estimated time. The estimated time is given in time spans.
+A required service has an estimated duration. The estimated duration is given in time spans.
+
+A required service has a due time. The due time is given in time spans.
 
 ### The data model represents performed service entity.
+
+A performed service has a type. The type is one of the following: concrete, construction, electrical, mechanical, plumbing, pump, steel, other.
 
 A performed service has a cost. The cost is given in moneys.
 
