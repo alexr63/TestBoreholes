@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using NodaMoney;
 using TestBoreholes;
+using TestBoreholes.ExchangeService;
 using TestBoreholes.WaterSources;
 using TestBoreholes.WaterSources.Boreholes.Services;
 using TestBoreholes.WaterSources.Boreholes.Statuses;
@@ -72,4 +73,9 @@ foreach (var location in locations)
         }
     }
 }
+
+var exchangeService = new ExchangeService();
+var naira10000 = new Money(10000m, "NGN");
+Console.WriteLine($"{naira10000} in USD is {exchangeService.Convert(naira10000)}.");
+
 
