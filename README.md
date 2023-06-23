@@ -88,7 +88,7 @@ A required service has an estimated cost. The estimated cost is given in moneys.
 
 A required service has an estimated duration. The estimated duration is given in time spans.
 
-A required service has a due time. The due time is given in time spans.
+A required service has a due date. The due date is given in date/time values.
 
 ### The data model represents performed service entity.
 
@@ -98,4 +98,4 @@ A performed service has a cost. The cost is given in moneys.
 
 A performed service has a durarion. The duration is given in time spans.
 
-A performed service has an end date. The end date is given as a date/time value.
+A performed service has an end date. The end date is given as date/time values.
