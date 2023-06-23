@@ -61,14 +61,16 @@ foreach (var location in locations)
             Console.WriteLine($"Consumption at {dateTimeOffset} was {value}.");
         }
 
+        Console.WriteLine($"Borehole {borehole.Id} has {borehole.RequiredServices.Count} required services.");
         foreach (var (serviceType, requiredService) in borehole.RequiredServices)
         {
             Console.WriteLine($"Borehole {borehole.Id} requires {serviceType} service at {requiredService.DueDate}, estimated cost is {requiredService.EstimatedCost}, estimated duration is {requiredService.EstimatedDuration}.");
         }
 
+        Console.WriteLine($"Borehole {borehole.Id} has {borehole.PerformedServices.Count} performed services.");
         foreach (var performedService in borehole.PerformedServices)
         {
-            Console.WriteLine($"Borehole {borehole.Id} was serviced for {performedService.ServiceType} at {performedService.EndDate}, service cost is {performedService.Cost}, service duration is {performedService.Duration}.");
+            Console.WriteLine($"Borehole {borehole.Id} was serviced for {performedService.ServiceType} at {performedService.EndDate}, service cost was {performedService.Cost}, service duration was {performedService.Duration}.");
         }
     }
 }
