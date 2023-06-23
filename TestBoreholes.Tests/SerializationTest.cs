@@ -10,7 +10,7 @@ namespace TestBoreholes.Tests
     {
         private readonly Location _ibadan = new Location("Ibadan", "Nigeria", 7.3117, 3.9026, new Borehole("NG-OY-1353", "FairAction Nigeria",
             new Pumping(300, new Money(76.54m, "NGN"))));
-        private const string _ibadanJson = "{\"City\":\"Ibadan\",\"Country\":\"Nigeria\",\"Latitude\":7.3117,\"Longitude\":3.9026,\"WaterSource\":{\"$type\":\"TestBoreholes.WaterSources.Borehole, TestBoreholes\",\"Id\":\"NG-OY-1353\",\"Owner\":\"FairAction Nigeria\",\"Status\":{\"$type\":\"TestBoreholes.WaterSources.Boreholes.Statuses.Pumping, TestBoreholes\",\"FlowRate\":300.0,\"EstimatedDailyOperationsCost\":{\"amount\":\"76.54\",\"currency\":\"NGN\"}},\"Consumptions\":{},\"Services\":[]}}";
+        private const string _ibadanJson = "{\"City\":\"Ibadan\",\"Country\":\"Nigeria\",\"Latitude\":7.3117,\"Longitude\":3.9026,\"WaterSource\":{\"$type\":\"TestBoreholes.WaterSources.Borehole, TestBoreholes\",\"Id\":\"NG-OY-1353\",\"Owner\":\"FairAction Nigeria\",\"Status\":{\"$type\":\"TestBoreholes.WaterSources.Boreholes.Statuses.Pumping, TestBoreholes\",\"FlowRate\":300.0,\"EstimatedDailyOperationsCost\":{\"amount\":\"76.54\",\"currency\":\"NGN\"}},\"Consumptions\":{},\"PerformedServices\":[],\"RequiredServices\":{}}}";
 
         [Fact]
         public void SerializeLocation()

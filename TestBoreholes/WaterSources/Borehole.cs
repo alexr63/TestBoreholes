@@ -39,9 +39,9 @@ public class Borehole : WaterSource
         RequiredServices[serviceType] = requiredService;
     }
     
-    public void AddConsumption(Consumption consumption)
+    public void AddConsumption(DateTimeOffset dateTimeOffset, double value)
     {
-        Consumptions[consumption.DateTimeOffset] = consumption.Value;
+        Consumptions[dateTimeOffset] = value;
     }
 
     public void ChangeStatusToDamaged(DamageSeverity damageSeverity, Money estimatedRepairCost, TimeSpan estimatedRepairTime)
@@ -57,5 +57,16 @@ public class Borehole : WaterSource
     public void ChangeStatusToBeingRepaired(Money dailyRepairCost)
     {
         Status = new BeingRepaired(dailyRepairCost);
+    }
+
+    public void PerformService(ServiceType serviceType, Money cost, TimeSpan duration, DateTimeOffset endDateTimeOffset)
+    {
+        if (RequiredServices.ContainsKey(serviceType))
+        {
+            RequiredServices.Remove(serviceType);
+
+            var performedService = new PerformedService(serviceType, cost, duration, endDateTimeOffset);
+            PerformedServices.Add(performedService);
+        }
     }
 }
