@@ -2,21 +2,16 @@
 
 namespace TestBoreholes.WaterSources.Boreholes.Services;
 
-public class RequiredService : Service
+public class RequiredService
 {
-    public ServiceType ServiceType { get; init; }
     public Money EstimatedCost { get; init; }
     public TimeSpan EstimatedDuration { get; init; }
+    public DateTimeOffset DueDate { get; init; }
 
-    public RequiredService(ServiceType serviceType, Money estimatedCost, TimeSpan estimatedDuration)
+    public RequiredService(Money estimatedCost, TimeSpan estimatedDuration, DateTimeOffset dueDate)
     {
-        ServiceType = serviceType;
         EstimatedCost = estimatedCost;
         EstimatedDuration = estimatedDuration;
-    }
-
-    public PerformedService Perform(Money cost, TimeSpan duration, DateTimeOffset endDateTimeOffset)
-    {
-        return new PerformedService(ServiceType, cost, duration, endDateTimeOffset);
+        DueDate = dueDate;
     }
 }
