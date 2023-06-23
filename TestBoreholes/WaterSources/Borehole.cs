@@ -21,25 +21,24 @@ public class Borehole : WaterSource
     [JsonProperty(TypeNameHandling = TypeNameHandling.Objects)]
     public Status Status { get; private set; }
     public SortedDictionary<DateTimeOffset, double> Consumptions { get; init; } = new();
-    public List<Service> Services { get; init; } = new();
+    public List<PerformedService> PerformedServices { get; init; } = new();
+    public Dictionary<ServiceType, RequiredService> RequiredServices { get; init; } = new();
 
     public override string ToString()
     {
         return $"Borehole {Id} is owned by {Owner}, current status is {Status.Format()}.";
     }
 
-    public void RequireService(RequiredService requiredService)
+    public void AddPerformedService(PerformedService performedService)
     {
-        Services.Add(requiredService);
+        PerformedServices.Add(performedService);
     }
 
-    public void PerformService(RequiredService requiredService, Money cost, TimeSpan duration, DateTimeOffset endDateTimeOffset)
+    public void AddRequiredService(ServiceType serviceType, RequiredService requiredService)
     {
-        var performedService = requiredService.Perform(cost, duration, endDateTimeOffset);
-        Services.Remove(requiredService);
-        Services.Add(performedService);
+        RequiredServices[serviceType] = requiredService;
     }
-
+    
     public void AddConsumption(Consumption consumption)
     {
         Consumptions[consumption.DateTimeOffset] = consumption.Value;

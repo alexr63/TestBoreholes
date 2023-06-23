@@ -2,7 +2,7 @@
 
 namespace TestBoreholes.WaterSources.Boreholes.Services;
 
-public class PerformedService : Service
+public class PerformedService
 {
     public ServiceType ServiceType { get; init; }
     public Money Cost { get; init; }

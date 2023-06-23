@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NodaMoney;
+using System;
 using TestBoreholes;
 using TestBoreholes.WaterSources;
 using TestBoreholes.WaterSources.Boreholes.Services;
@@ -24,9 +25,14 @@ var locations = new List<Location>
         new Pumping(300, new Money(76.54m, "NGN")))),
 };
 
-if (locations[1].WaterSource is Borehole borehole1)
+if (locations[1].WaterSource is Borehole parisBorehole)
 {
-    borehole1.RequireService(new RequiredService(ServiceType.Concrete, Money.Euro(123.45m), TimeSpan.FromDays(4)));
+    var timeZoneInfo = locations[1].GetTimeZoneInfo();
+    parisBorehole.AddRequiredService(ServiceType.Concrete,
+        new RequiredService(Money.Euro(2000.00m), TimeSpan.FromDays(7), new DateTimeOffset(2021, 3, 1, 0, 0, 0, timeZoneInfo.BaseUtcOffset)));
+    parisBorehole.AddRequiredService(ServiceType.Pump,
+        new RequiredService(Money.Euro(5000.00m), TimeSpan.FromDays(10), new DateTimeOffset(2021, 4, 1, 0, 0, 0, timeZoneInfo.BaseUtcOffset)));
+    parisBorehole.PerformService(ServiceType.Concrete, Money.Euro(234.56m), TimeSpan.FromDays(5), new DateTimeOffset(2021, 3, 2, 10, 30, 0, timeZoneInfo.BaseUtcOffset));
 }
 
 var json = JsonConvert.SerializeObject(locations);
@@ -49,6 +55,12 @@ foreach (var location in locations)
         foreach (var service in borehole.Services)
         {
             Console.WriteLine(service.Format());
+        }
+
+        var serviceCosts = borehole.Services.Select(service => service.GetCost());
+        foreach (var serviceCost in serviceCosts)
+        {
+            Console.WriteLine($"Service cost: {serviceCost}");
         }
     }
 }
