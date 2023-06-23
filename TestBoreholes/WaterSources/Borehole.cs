@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using NodaMoney;
-using TestBoreholes.WaterSources.Boreholes;
 using TestBoreholes.WaterSources.Boreholes.Services;
 using TestBoreholes.WaterSources.Boreholes.Statuses;
 
@@ -29,11 +28,6 @@ public class Borehole : WaterSource
         return $"Borehole {Id} is owned by {Owner}, current status is {Status.Format()}.";
     }
 
-    public void AddPerformedService(PerformedService performedService)
-    {
-        PerformedServices.Add(performedService);
-    }
-
     public void AddRequiredService(ServiceType serviceType, RequiredService requiredService)
     {
         RequiredServices[serviceType] = requiredService;
@@ -42,21 +36,6 @@ public class Borehole : WaterSource
     public void AddConsumption(DateTimeOffset dateTimeOffset, double value)
     {
         Consumptions[dateTimeOffset] = value;
-    }
-
-    public void ChangeStatusToDamaged(DamageSeverity damageSeverity, Money estimatedRepairCost, TimeSpan estimatedRepairTime)
-    {
-        Status = new Damaged(damageSeverity, estimatedRepairCost, estimatedRepairTime);
-    }
-
-    public void ChangeStatusToPumping(double flowRate, Money estimatedDailyOperationsCost)
-    {
-        Status = new Pumping(flowRate, estimatedDailyOperationsCost);
-    }
-
-    public void ChangeStatusToBeingRepaired(Money dailyRepairCost)
-    {
-        Status = new BeingRepaired(dailyRepairCost);
     }
 
     public void PerformService(ServiceType serviceType, Money cost, TimeSpan duration, DateTimeOffset endDateTimeOffset)

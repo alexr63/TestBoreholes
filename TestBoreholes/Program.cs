@@ -1,28 +1,26 @@
 ﻿using Newtonsoft.Json;
 using NodaMoney;
-using System;
 using TestBoreholes;
 using TestBoreholes.WaterSources;
-using TestBoreholes.WaterSources.Boreholes;
 using TestBoreholes.WaterSources.Boreholes.Services;
 using TestBoreholes.WaterSources.Boreholes.Statuses;
 using Stream = TestBoreholes.WaterSources.Stream;
 
 var locations = new List<Location>
 {
-    new Location("London", "United Kingdom", 51.5074, -0.1278, new Borehole("L1", "John", new Pumping(100, Money.Euro(100.0m)))),
-    new Location("Paris", "France", 48.8566, 2.3522, new Borehole("P1", "Jane",
+    new("London", "United Kingdom", 51.5074, -0.1278, new Borehole("L1", "John", new Pumping(100, Money.Euro(100.0m)))),
+    new("Paris", "France", 48.8566, 2.3522, new Borehole("P1", "Jane",
         new Damaged(DamageSeverity.Low, Money.Euro(1000.0m), TimeSpan.FromDays(5)))),
-    new Location("Berlin", "Germany", 52.5200, 13.4050, new Borehole("B1", "Jack",
+    new("Berlin", "Germany", 52.5200, 13.4050, new Borehole("B1", "Jack",
         new Damaged(DamageSeverity.Medium, Money.Euro(1500.0m), TimeSpan.FromDays(3)))),
-    new Location("Madrid", "Spain", 40.4168, -3.7038, new Borehole("M1", "Jill",
+    new("Madrid", "Spain", 40.4168, -3.7038, new Borehole("M1", "Jill",
         new BeingRepaired(Money.Euro(200.0m)))),
-    new Location("Rome", "Italy", 41.9028, 12.4964, new Borehole("R1", "Joe", new Pumping(200, Money.Euro(200.0m)))),
-    new Location("Vienna", "Austria", 48.2082, 16.3738, new Stream("Danube", 1000)),
-    new Location("Budapest", "Hungary", 47.4979, 19.0402, new Pond("Lake Balaton", 1000)),
-    new Location("Warsaw", "Poland", 52.2297, 21.0122, new Rain(1000)),
-    new Location("Kiev", "Ukraine", 50.4501, 30.5234, new Rain(2000)),
-    new Location("Ibadan", "Nigeria", 7.3117, 3.9026, new Borehole("NG-OY-1353", "FairAction Nigeria",
+    new("Rome", "Italy", 41.9028, 12.4964, new Borehole("R1", "Joe", new Pumping(200, Money.Euro(200.0m)))),
+    new("Vienna", "Austria", 48.2082, 16.3738, new Stream("Danube", 1000)),
+    new("Budapest", "Hungary", 47.4979, 19.0402, new Pond("Lake Balaton", 1000)),
+    new("Warsaw", "Poland", 52.2297, 21.0122, new Rain(1000)),
+    new("Kiev", "Ukraine", 50.4501, 30.5234, new Rain(2000)),
+    new("Ibadan", "Nigeria", 7.3117, 3.9026, new Borehole("NG-OY-1353", "FairAction Nigeria",
         new Pumping(300, new Money(76.54m, "NGN")))),
 };
 
