@@ -2,9 +2,9 @@
 
 namespace TestBoreholes.WaterSources.Boreholes.Statuses;
 
-public class BeingRepaired : Damaged
+public class BeingRepaired : Status
 {
-    public BeingRepaired(DamageSeverity damageSeverity, Money estimatedRepairCost, TimeSpan estimatedRepairTime, Money dailyRepairCost) : base(damageSeverity, estimatedRepairCost, estimatedRepairTime)
+    public BeingRepaired(Money dailyRepairCost)
     {
         DailyRepairCost = dailyRepairCost;
     }

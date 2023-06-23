@@ -21,28 +21,27 @@ public class Borehole : WaterSource
     [JsonProperty(TypeNameHandling = TypeNameHandling.Objects)]
     public Status Status { get; private set; }
     public SortedDictionary<DateTimeOffset, double> Consumptions { get; init; } = new();
-    public List<Service> Services { get; init; } = new();
+    public List<PerformedService> PerformedServices { get; init; } = new();
+    public Dictionary<ServiceType, RequiredService> RequiredServices { get; init; } = new();
 
     public override string ToString()
     {
         return $"Borehole {Id} is owned by {Owner}, current status is {Status.Format()}.";
     }
 
-    public void RequireService(RequiredService requiredService)
+    public void AddPerformedService(PerformedService performedService)
     {
-        Services.Add(requiredService);
+        PerformedServices.Add(performedService);
     }
 
-    public void PerformService(RequiredService requiredService, Money cost, TimeSpan duration, DateTimeOffset endDateTimeOffset)
+    public void AddRequiredService(ServiceType serviceType, RequiredService requiredService)
     {
-        var performedService = requiredService.Perform(cost, duration, endDateTimeOffset);
-        Services.Remove(requiredService);
-        Services.Add(performedService);
+        RequiredServices[serviceType] = requiredService;
     }
-
-    public void AddConsumption(Consumption consumption)
+    
+    public void AddConsumption(DateTimeOffset dateTimeOffset, double value)
     {
-        Consumptions[consumption.DateTimeOffset] = consumption.Value;
+        Consumptions[dateTimeOffset] = value;
     }
 
     public void ChangeStatusToDamaged(DamageSeverity damageSeverity, Money estimatedRepairCost, TimeSpan estimatedRepairTime)
@@ -55,9 +54,19 @@ public class Borehole : WaterSource
         Status = new Pumping(flowRate, estimatedDailyOperationsCost);
     }
 
-    public void ChangeStatusToBeingRepaired(DamageSeverity damageSeverity,
-        Money estimatedRepairCost, TimeSpan estimatedRepairTime, Money dailyRepairCost)
+    public void ChangeStatusToBeingRepaired(Money dailyRepairCost)
     {
-        Status = new BeingRepaired(damageSeverity, estimatedRepairCost, estimatedRepairTime, dailyRepairCost);
+        Status = new BeingRepaired(dailyRepairCost);
+    }
+
+    public void PerformService(ServiceType serviceType, Money cost, TimeSpan duration, DateTimeOffset endDateTimeOffset)
+    {
+        if (RequiredServices.ContainsKey(serviceType))
+        {
+            RequiredServices.Remove(serviceType);
+
+            var performedService = new PerformedService(serviceType, cost, duration, endDateTimeOffset);
+            PerformedServices.Add(performedService);
+        }
     }
 }

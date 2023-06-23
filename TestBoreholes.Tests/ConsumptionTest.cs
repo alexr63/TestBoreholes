@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using NodaMoney;
 using TestBoreholes.WaterSources;
 using TestBoreholes.WaterSources.Boreholes;
 using TestBoreholes.WaterSources.Boreholes.Statuses;
@@ -18,12 +19,12 @@ namespace TestBoreholes.Tests
         public void ConsumptionTimeZoneShouldBeInTargetFormat()
         {
             // change the water source to a borehole
-            _ibadan.WaterSource = new Borehole("NG-OY-1353", "FairAction Nigeria", new Pumping(100, 100));
+            _ibadan.WaterSource = new Borehole("NG-OY-1353", "FairAction Nigeria", new Pumping(100, new Money(76.54m, "NGN")));
             var ibadanBorehole = (Borehole)_ibadan.WaterSource;
             var timeZoneInfo = _ibadan.GetTimeZoneInfo();
 
             // add a consumption
-            ibadanBorehole.AddConsumption(new Consumption(new DateTimeOffset(2021, 1, 1, 10, 30, 0, timeZoneInfo.BaseUtcOffset), 100));
+            ibadanBorehole.AddConsumption(new DateTimeOffset(2021, 1, 1, 10, 30, 0, timeZoneInfo.BaseUtcOffset), 100);
 
             // display the consumption using the time zone of the target country
             const string targetTimeZoneId = "FLE Standard Time";

@@ -6,8 +6,7 @@ static class Formatters
     {
         Pumping pumping =>
             $"Pumping with flow rate {pumping.FlowRate} and estimated daily operations cost {pumping.EstimatedDailyOperationsCost}",
-        BeingRepaired beingRepaired =>
-            $"Being repaired with damage type {beingRepaired.DamageSeverity} and daily repair cost {beingRepaired.DailyRepairCost}",
+        BeingRepaired beingRepaired => $"Being repaired with daily repair cost {beingRepaired.DailyRepairCost}",
         Damaged damaged => $"Damaged with damage type {damaged.DamageSeverity}",
         _ => throw new NotImplementedException()
     };
