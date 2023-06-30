@@ -31,7 +31,7 @@ public partial class TestBoreholesContext : DbContext
 
         modelBuilder.Entity<Location>(entity =>
         {
-            entity.ToTable("Location");
+            entity.ToTable("Locations");
 
             entity.Property(e => e.City)
                 .IsRequired()
@@ -47,8 +47,14 @@ public partial class TestBoreholesContext : DbContext
 
             entity.Property(e => e.WaterSource)
                 .HasConversion(
-                    v => JsonConvert.SerializeObject(v),     // Convert object to JSON string
-                    v => (WaterSource?)JsonConvert.DeserializeObject(v)  // Convert JSON string to object
+                    v => JsonConvert.SerializeObject(v, Formatting.None, new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.Auto
+                    }),     // Convert object to JSON string
+                    v => JsonConvert.DeserializeObject<WaterSource>(v, new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.Auto
+                    })  // Convert JSON string to object
                 );
         });
 

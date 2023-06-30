@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using NodaMoney;
 using TestBoreholes;
 using TestBoreholes.ExchangeService;
@@ -7,6 +9,26 @@ using TestBoreholes.WaterSources.Boreholes.Services;
 using TestBoreholes.WaterSources.Boreholes.Statuses;
 using Stream = TestBoreholes.WaterSources.Stream;
 
+var builder = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json");
+
+var configuration = builder.Build();
+
+// connect to main database
+var optionsBuilder = new DbContextOptionsBuilder<TestBoreholesContext>();
+optionsBuilder.UseLazyLoadingProxies().UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+
+var context = new TestBoreholesContext(optionsBuilder.Options);
+
+// migrate database to latest version
+//context.Database.EnsureDeleted();
+//context.Database.EnsureCreated();
+//context.Database.Migrate();
+
+#if TEST
+var locations = context.Locations.ToList();
+#else
 var locations = new List<Location>
 {
     new("London", "United Kingdom", 51.5074, -0.1278, new Borehole("L1", "John", new Pumping(100, Money.Euro(100.0m)))),
@@ -24,6 +46,10 @@ var locations = new List<Location>
     new("Ibadan", "Nigeria", 7.3117, 3.9026, new Borehole("NG-OY-1353", "FairAction Nigeria",
         new Pumping(300, new Money(76.54m, "NGN")))),
 };
+
+context.Locations.AddRange(locations);
+context.SaveChanges();
+#endif
 
 if (locations[1].WaterSource is Borehole parisBorehole)
 {

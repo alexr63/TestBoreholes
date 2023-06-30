@@ -34,12 +34,12 @@ public class Location
     public double Latitude { get; set; }
     public double Longitude { get; set; }
 
-    [JsonProperty(TypeNameHandling = TypeNameHandling.Objects)]
+    [JsonProperty(TypeNameHandling = TypeNameHandling.Auto)]
     public WaterSource? WaterSource { get; set; }
 
     public override string ToString()
     {
-        return $"Location: {City}, {Country}, {Latitude}, {Longitude} {WaterSource?.Format()}";
+        return $"Location: {City}, {Country}, {Latitude}, {Longitude}";
     }
 
     public TimeZoneInfo GetTimeZoneInfo()
