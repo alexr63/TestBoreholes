@@ -63,6 +63,9 @@ var database = client.GetDatabase("TestBoreholes");
 var collection = database.GetCollection<Location>("Locations");
 var list = await collection.Find(e => true).ToListAsync();
 
+//collection.InsertMany(locations);
+//var list2 = await collection.Find(e => true).ToListAsync();
+
 // display currency symbols correctly
 Console.OutputEncoding = System.Text.Encoding.Unicode;
 
