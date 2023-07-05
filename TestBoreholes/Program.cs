@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
+using Newtonsoft.Json;
 using NodaMoney;
 using TestBoreholes;
 using TestBoreholes.ExchangeService;
@@ -45,6 +47,21 @@ if (locations.Last().WaterSource is Borehole ibadanBorehole)
 }
 
 var json = JsonConvert.SerializeObject(locations);
+
+const string connectionUri = "mongodb+srv://alex:dxoLSJzx72JgPpQe@cluster0.cb3bmdl.mongodb.net/?retryWrites=true&w=majority";
+
+var settings = MongoClientSettings.FromConnectionString(connectionUri);
+
+// Set the ServerApi field of the settings object to Stable API version 1
+settings.ServerApi = new ServerApi(ServerApiVersion.V1);
+
+// Create a new client and connect to the server
+var client = new MongoClient(settings);
+
+var database = client.GetDatabase("TestBoreholes");
+
+var collection = database.GetCollection<Location>("Locations");
+var list = await collection.Find(e => true).ToListAsync();
 
 // display currency symbols correctly
 Console.OutputEncoding = System.Text.Encoding.Unicode;
