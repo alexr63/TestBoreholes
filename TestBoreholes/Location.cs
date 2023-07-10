@@ -1,4 +1,5 @@
 ﻿using GeoTimeZone;
+using MongoDB.Bson;
 using Newtonsoft.Json;
 using TestBoreholes.WaterSources;
 using TimeZoneConverter;
@@ -16,6 +17,7 @@ public class Location
         WaterSource = waterSource;
     }
 
+    public ObjectId Id { get; set; }
     public string City { get; set; }
     public string Country { get; set; }
     public double Latitude { get; set; }

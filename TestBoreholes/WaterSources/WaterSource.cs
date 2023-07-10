@@ -1,5 +1,8 @@
-﻿namespace TestBoreholes.WaterSources;
+﻿using MongoDB.Bson;
 
-public abstract class WaterSource
+namespace TestBoreholes.WaterSources;
+
+public class WaterSource
 {
+    public ObjectId Id { get; set; }
 }

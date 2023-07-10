@@ -31,20 +31,11 @@ var locations = new List<Location>
 if (locations[1].WaterSource is Borehole parisBorehole)
 {
     var timeZoneInfo = locations[1].GetTimeZoneInfo();
-    parisBorehole.AddRequiredService(ServiceType.Concrete,
-        new RequiredService(Money.Euro(2000.00m), TimeSpan.FromDays(7), new DateTimeOffset(2021, 3, 1, 0, 0, 0, timeZoneInfo.BaseUtcOffset)));
-    parisBorehole.AddRequiredService(ServiceType.Pump,
-        new RequiredService(Money.Euro(5000.00m), TimeSpan.FromDays(10), new DateTimeOffset(2021, 4, 1, 0, 0, 0, timeZoneInfo.BaseUtcOffset)));
-    parisBorehole.AddRequiredService(ServiceType.Electrical,
-        new RequiredService(Money.Euro(1000.00m), TimeSpan.FromDays(1), new DateTimeOffset(2021, 4, 1, 0, 0, 0, timeZoneInfo.BaseUtcOffset)));
-    parisBorehole.PerformService(ServiceType.Concrete, Money.Euro(2345.67m), TimeSpan.FromDays(5), new DateTimeOffset(2021, 3, 2, 10, 30, 0, timeZoneInfo.BaseUtcOffset));
 }
 
 if (locations.Last().WaterSource is Borehole ibadanBorehole)
 {
     var timeZoneInfo = locations[1].GetTimeZoneInfo();
-    ibadanBorehole.AddConsumption(new DateTimeOffset(2021, 1, 1, 10, 30, 0, timeZoneInfo.BaseUtcOffset), 100);
-    ibadanBorehole.AddConsumption(new DateTimeOffset(2021, 1, 2, 10, 30, 0, timeZoneInfo.BaseUtcOffset), 200);
 }
 
 var json = JsonConvert.SerializeObject(locations);
@@ -67,7 +58,7 @@ var database = client.GetDatabase("local");
 
 var collection = database.GetCollection<Location>("Locations");
 
-collection.InsertMany(locations);
+//collection.InsertMany(locations);
 
 var list = await collection.Find(e => true).ToListAsync();
 var firstDocument = list.First();
@@ -86,18 +77,6 @@ foreach (var location in locations)
     Console.WriteLine(location);
     if (location.WaterSource is Borehole borehole)
     {
-        Console.WriteLine($"Borehole {borehole.Id} has {borehole.Consumptions.Count} consumptions.");
-        foreach (var (dateTimeOffset, value) in borehole.Consumptions)
-        {
-            Console.WriteLine($"Consumption at {dateTimeOffset} was {value}.");
-        }
-
-        Console.WriteLine($"Borehole {borehole.Id} has {borehole.RequiredServices.Count} required services.");
-        foreach (var (serviceType, requiredService) in borehole.RequiredServices)
-        {
-            Console.WriteLine($"Borehole {borehole.Id} requires {serviceType} service at {requiredService.DueDate}, estimated cost is {requiredService.EstimatedCost}, estimated duration is {requiredService.EstimatedDuration}.");
-        }
-
         Console.WriteLine($"Borehole {borehole.Id} has {borehole.PerformedServices.Count} performed services.");
         foreach (var performedService in borehole.PerformedServices)
         {
