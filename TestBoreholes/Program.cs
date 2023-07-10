@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using Newtonsoft.Json;
 using NodaMoney;
@@ -48,7 +49,7 @@ if (locations.Last().WaterSource is Borehole ibadanBorehole)
 
 var json = JsonConvert.SerializeObject(locations);
 
-const string connectionUri = "mongodb+srv://alex:dxoLSJzx72JgPpQe@cluster0.cb3bmdl.mongodb.net/?retryWrites=true&w=majority";
+const string connectionUri = "mongodb://localhost:27017";
 
 var settings = MongoClientSettings.FromConnectionString(connectionUri);
 
@@ -58,10 +59,21 @@ settings.ServerApi = new ServerApi(ServerApiVersion.V1);
 // Create a new client and connect to the server
 var client = new MongoClient(settings);
 
-var database = client.GetDatabase("TestBoreholes");
+BsonSerializer.RegisterSerializer(new MoneySerializer());
+
+var database = client.GetDatabase("local");
+
+//database.CreateCollection("Locations");
 
 var collection = database.GetCollection<Location>("Locations");
+
+collection.InsertMany(locations);
+
 var list = await collection.Find(e => true).ToListAsync();
+var firstDocument = list.First();
+Console.WriteLine(firstDocument.ToString());
+
+//var list = await collection.Find(e => true).ToListAsync();
 
 //collection.InsertMany(locations);
 //var list2 = await collection.Find(e => true).ToListAsync();
